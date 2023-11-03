@@ -1,0 +1,23 @@
+.THIS {
+	background-image: url(https://raw.githubusercontent.com/mshanemc/platformTrial/master/assets/utility-bar.png);
+	background-size: cover;
+	color:rgba(255, 255, 255, 0.75);
+	height:100%;
+}
+
+.THIS .slds-text-heading_medium {
+	color:whitesmoke;
+}
+
+.THIS ol {
+	list-style: decimal;
+}
+
+.THIS ol li {
+	margin-left:30px;
+}
+
+.THIS .slds-theme_shade {
+	background-color: rgba(255, 255, 255, 0.80);
+	color: rgb(62, 62, 60);
+}

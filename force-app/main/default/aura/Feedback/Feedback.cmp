@@ -1,0 +1,28 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" controller="feedback">
+
+	<aura:attribute name="rating" type="string" required="false"/>
+	<aura:attribute name="comments" type="string" required="false"/>
+	<aura:attribute name="sent" type="boolean" required="false" default="false"/>
+
+	<div class="slds-p-around_medium">
+		<aura:if isTrue="{!v.sent}">
+			<p class="slds-m-bottom_medium">Thanks for your feedback!</p>
+			<lightning:button variant="neutral" label="Send More Feedback" onclick="{!c.sendMore}"/>
+		</aura:if>
+		<aura:if isTrue="{!!v.sent}">
+
+			<p class="slds-m-bottom_medium">How is your trial going?</p>
+			<lightning:button variant="{!if(v.rating=='Positive', 'brand', 'neutral')}" label="Great!" onclick="{!c.positive}" iconName="utility:like"/>
+			<lightning:button variant="{!if(v.rating=='Neutral', 'brand', 'neutral')}" label="OK" onclick="{!c.neutral}" iconName="utility:dash"/>
+			<lightning:button variant="{!if(v.rating=='Negative', 'brand', 'neutral')}" label="Bad" onclick="{!c.negative}" iconName="utility:dislike"/>
+
+			<lightning:textarea class="slds-m-vertical_medium" name="comments" value="{!v.comments}"
+		    label="What can we do to make it better?" maxlength="800" />
+
+			<lightning:button variant="brand" label="Send" onclick="{!c.send}"/>
+		</aura:if>
+	</div>
+
+	<c:UniversalAnalytics location="feedback"/>
+
+</aura:component>

@@ -1,0 +1,70 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" controller="MissionEquipment">
+
+	<aura:attribute name="allEquipment" type="object[]" />
+	<aura:attribute name="filteredEquipment" type="object[]" />
+	<aura:attribute name="searchText" type="string" />
+	<aura:attribute name="selectedItem" type="object" />
+
+	<aura:attribute name="newMissionEquipment" type="object"/>
+	<aura:attribute name="newMissionEquipmentError" type="object"/>
+
+	<force:recordData aura:id="nme" targetFields="{!v.newMissionEquipment}" targetError="{!v.newMissionEquipmentError}" layoutType="FULL"/>
+
+	<ltng:require scripts="{!$Resource.lodash}" styles="styles" afterScriptsLoaded="{!c.doInit}"/>
+
+	<lightning:card >
+		<aura:set attribute="title">
+			<aura:if isTrue="{!v.selectedItem.Id}">
+				Add {!v.selectedItem.Name__c}
+			</aura:if>
+			<aura:if isTrue="{!!v.selectedItem.Id}">
+				Add Equipment
+			</aura:if>
+		</aura:set>
+		<p class="slds-p-horizontal--small">
+
+			<aura:if isTrue="{!v.selectedItem.Id}">
+				<lightning:input label=" " placeholder="how many?..." value="{!v.newMissionEquipment.Quantity__c}" type="number" class="slds-m-vertical--medium no-label" max="{!v.selectedItem.Available_quantity__c}" messageWhenRangeOverflow="{!'We only have ' + v.selectedItem.Available_quantity__c + ' of those.'}"/>
+		    <lightning:button variant="brand" label="Add" onclick="{! c.addItems }" />
+		    <lightning:button variant="neutral" label="Cancel" onclick="{! c.cancel }" />
+			</aura:if>
+
+
+			<aura:if isTrue="{!!v.selectedItem.Id}">
+				<lightning:input label=" " placeholder="Seach Equipment" value="{!v.searchText}" onchange="{!c.callFilter}" class="slds-m-bottom--xx-small no-label"/>
+
+				<table class="slds-table slds-table_bordered slds-table_cell-buffer">
+					<thead>
+						<tr class="slds-text-title_caps">
+							<th scope="col">
+								<div class="slds-truncate" title="Item">Item</div>
+							</th>
+							<th scope="col">
+								<div class="slds-truncate" title="Type">Type</div>
+							</th>
+							<th scope="col">
+								<div class="slds-truncate" title="Available">Available</div>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<aura:iteration items="{!v.filteredEquipment}" var="item" end="5">
+							<tr id="{!item.Id}" onclick="{!c.select}">
+								<th scope="row" data-label="Item" id="{!item.Id}">
+									<div class="slds-truncate" title="{!item.Name__c}" id="{!item.Id}">{!item.Name__c}</div>
+								</th>
+								<th scope="row" data-label="Type" id="{!item.Id}">
+									<div class="slds-truncate" title="{!item.Type__c}" id="{!item.Id}">{!item.Type__c}</div>
+								</th>
+								<th scope="row" data-label="Available" id="{!item.Id}">
+									<div class="slds-truncate" title="{!item.Available_quantity__c}" id="{!item.Id}">{!item.Available_quantity__c}</div>
+								</th>
+							</tr>
+						</aura:iteration>
+					</tbody>
+				</table>
+			</aura:if>
+		</p>
+
+	</lightning:card>
+</aura:component>

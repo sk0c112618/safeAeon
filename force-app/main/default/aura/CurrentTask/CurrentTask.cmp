@@ -1,0 +1,100 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes" controller="TrialUtilities">
+
+
+	<lightning:utilityBarAPI aura:id="utilitybar" />
+
+	<aura:registerEvent name="sendMessage" type="ltng:sendMessage"/>
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<aura:handler event="aura:locationChange" action="{!c.locationChange}" />
+
+	<force:recordData fields="['Paths_Chosen__c', 'WelcomeViewed__c', 'Video_Watched__c', 'Current_Step__c']" mode="VIEW" targetFields="{!v.trialFields}" aura:id="trialRec" targetError="{!v.error}" recordUpdated="{!c.stepChange}"/>
+	<aura:attribute name="trialFields" type="object" />
+	<aura:attribute name="error" type="object" />
+
+	<force:recordData recordId="{!v.trialFields.Current_Step__c}" mode="VIEW" targetFields="{!v.stepFields}" aura:id="stepRec" fields="['Id', 'Description__c', 'Trailhead_Content__c', 'Close_URL__c', 'Mobile_Demo_URL__c', 'testMethod__c', 'How_Built_URL__c', 'How_To_URL__c','Name', 'Requirements__c', 'Value__c', 'Completed__c', 'Path_Sequence__c']" targetError="{!v.stepError}" recordUpdated="{!c.stepLoaded}"/>
+	<aura:attribute name="stepFields" type="object" />
+	<aura:attribute name="stepError" type="object" />
+
+	<force:recordData fields="['Current_Step__c']" mode="EDIT" targetFields="{!v.trialFieldsE}"
+	aura:id="trialRecE" targetError="{!v.trialRecEerror}" />
+	<aura:attribute name="trialFieldsE" type="object" />
+	<aura:attribute name="trialRecEerror" type="object" />
+
+	<!-- We might update the completed field on the path step -->
+	<force:recordData aura:id="stepRecE" mode="EDIT" recordId="{!v.trialFields.Current_Step__c}" targetFields="{!v.stepFieldsE}" layoutType="FULL"/>
+	<aura:attribute name="stepFieldsE" type="Object"/>
+
+	<lightning:overlayLibrary aura:id="gifModal" />
+
+
+
+
+
+	<aura:if isTrue="{!v.trialFields.Paths_Chosen__c}">
+
+		<div class="slds-p-around_medium">
+			<div class="slds-text-heading_medium">{!v.stepFields.Name}</div>
+			<div class="slds-m-vertical_medium">
+				<ui:outputRichText value="{!v.stepFields.Description__c}"/>
+			</div>
+
+			<aura:if isTrue="{!v.stepFields.Requirements__c}">
+				<div class="slds-box slds-theme_shade slds-m-vertical_medium">
+					<ui:outputRichText value="{!v.stepFields.Requirements__c}"/>
+				</div>
+			</aura:if>
+
+			<div class="slds-m-vertical_medium">
+				<ui:outputRichText value="{!v.stepFields.Value__c}"/>
+			</div>
+
+			<!-- buttons -->
+			<div class="slds-m-vertical_medium">
+				<aura:if isTrue="{!and(!v.stepFields.Close_URL__c, v.stepFields.testMethod__c)}">
+					<!-- <c:TestVerifier methodName="{!v.stepFields.testMethod__c}" refreshAction="{!c.fullReload}" closeURL="{!v.stepFields.Close_URL__c}"/> -->
+					<!-- <c:TestVerifier trialId="{#v.trialFields.Id}" pathId="{#v.stepFields.Id}" /> -->
+					<aura:if isTrue="{!!v.stepFields.Completed__c}">
+						<lightning:button label="Check my work" onclick="{!c.check}" variant="brand" />
+					</aura:if>
+					<aura:if isTrue="{!v.stepFields.Completed__c}">
+						You've already completed this task. Nice work!
+					</aura:if>
+				</aura:if>
+
+				<aura:if isTrue="{!v.stepFields.How_To_URL__c}">
+					<lightning:button variant="neutral" label="Show me how" onclick="{!c.vid}" value="How_To_URL__c"/>
+				</aura:if>
+
+				<!-- <aura:if isTrue="{!v.stepFields.Mobile_Demo_URL__c}">
+					<lightning:button variant="neutral" label="Show me (phone)" onclick="{!c.vid}" value="Mobile_Demo_URL__c"/>
+				</aura:if>
+
+				<aura:if isTrue="{!v.stepFields.How_Built_URL__c}">
+					<lightning:button variant="neutral" label="How was this made?" onclick="{!c.vid}" value="How_Built_URL__c"/>
+				</aura:if> -->
+			</div>
+
+			<aura:if isTrue="{!v.stepFields.Trailhead_Content__c}">
+				<div class="slds-m-vertical_medium slds-media slds-media_center">
+					<div class="slds-media__figure">
+						<span class="slds-avatar slds-avatar_large">
+							<img src="https://raw.githubusercontent.com/mshanemc/platformTrial/master/assets/trailheadTransparent.png"/>
+						</span>
+					</div>
+					<div class="slds-media__body">
+						<div class="slds-text-heading_small">Learn more on Trailhead</div>
+						<ui:outputRichText value="{!v.stepFields.Trailhead_Content__c}"/>
+					</div>
+				</div>
+			</aura:if>
+
+
+		</div>
+	</aura:if>
+
+	<c:popoverManager startOnInit="false" aura:id="pom" />
+	<c:UniversalAnalytics aura:id="tvua" />
+	<c:LightningErrorHandler aura:id="leh" />
+
+</aura:component>

@@ -1,0 +1,7 @@
+.THIS.no-pointer .pointer{
+	visibility: hidden;
+}
+
+.THIS.uiPanel--default.positioned, .THIS .slds-popover__header {
+	border-color: rgba(0,0,0,0);
+}

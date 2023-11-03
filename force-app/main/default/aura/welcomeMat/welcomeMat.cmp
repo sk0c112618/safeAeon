@@ -1,0 +1,12 @@
+<aura:component implements="force:appHostable" controller="TrialUtilities">
+
+	<aura:attribute name="popovers" type="object[]"  />
+	<aura:attribute name="activePopover" type="integer"  access="global" />
+
+	<lightning:overlayLibrary aura:id="overlayLib"/>
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<!-- leave this so that the CSS loads.  If there's no visibile markup in a component, the CSS doesn't load -->
+	&nbsp;
+
+</aura:component>

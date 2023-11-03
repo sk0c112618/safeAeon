@@ -1,0 +1,18 @@
+<aura:component controller="UniversalAnalytics">
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<aura:handler event="aura:locationChange" action="{!c.moved}"/>
+	<aura:handler event="forceCommunity:routeChange" action="{!c.movedCommunity}"/>
+
+	<aura:handler event="aura:systemError" action="{!c.handleError}"/>
+
+	<aura:method name="eventMethod" action="{!c.handleEvent}" access="global">
+		<aura:attribute name="category" type="string" required="true" />
+		<aura:attribute name="action" type="string" required="true" />
+		<aura:attribute name="label" type="string" required="false" />
+	</aura:method>
+
+	<aura:attribute name="location" type="string" required="false" access="global"/>
+
+</aura:component>

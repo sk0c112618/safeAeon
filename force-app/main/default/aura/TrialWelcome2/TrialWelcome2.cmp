@@ -1,0 +1,66 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:appHostable" extends="c:promiseErrorHandler" controller="TrialUtilities">
+
+	<aura:attribute name="trialFields" type="object" />
+	<aura:attribute name="trialFieldsE" type="object" />
+	<aura:attribute name="error" type="object" />
+	<aura:attribute name="errorE" type="object" />
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<aura:attribute name="recordId" type="id"/>
+	<c:LightningErrorHandler aura:id="leh"/>
+
+	<force:recordData fields="['Paths_Chosen__c', 'WelcomeViewed__c', 'Video_Watched__c', 'Current_Step__c']" mode="VIEW" targetFields="{!v.trialFields}" aura:id="trialRec" targetError="{!v.error}" recordUpdated="{!c.doneYet}"/>
+
+	<force:recordData mode="EDIT" targetFields="{!v.trialFieldsE}" aura:id="trialRecE" fields="['Paths_Chosen__c', 'Video_Watched__c', 'WelcomeViewed__c', 'Path_See_Apps__c', 'Path_Build_Apps__c', 'Path_IT_Tools__c', 'Path_Mobile__c', 'Current_Step__c']" targetError="{!v.errorE}"/>
+
+	<lightning:overlayLibrary aura:id="overlayLibModal"/>
+  <!-- welcome message -->
+	<aura:if isTrue="{!and(v.trialFields, !v.trialFields.WelcomeViewed__c)}">
+
+		<lightning:layout horizontalAlign="spread" verticalAlign="stretch">
+
+			<lightning:layoutItem size="7" class="background">
+				<lightning:layout horizontalAlign="center" verticalAlign="stretch" class="fullHeight">
+					<lightning:layoutItem size="6" class="slds-align_absolute-center">
+						<img src="https://raw.githubusercontent.com/mshanemc/platformTrial/master/assets/welcome-image.png" />
+					</lightning:layoutItem>
+				</lightning:layout>
+			</lightning:layoutItem>
+
+			<lightning:layoutItem size="5" padding="around-medium">
+				<!-- <h1 class="slds-text-heading_large slds-m-bottom_large">Welcome to the Lightning Platform Free Trial</h1> -->
+
+				<!-- <p class="slds-text-heading_small slds-m-vertical_medium">Please watch this orientation video to get you started.</p> -->
+				<lightning:layout verticalAlign="stretch" multipleRows="true" class="fullHeight">
+
+					<lightning:layoutItem size="12" flexibility="no-flex" class="slds-align-top">
+						<h1 class="slds-text-heading_medium"><b>Welcome to the Lightning Platform Free Trial</b></h1>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem size="12" flexibility="grow" class="slds-text-heading_medium">
+
+						<p class="slds-m-vertical_medium">Meet the Salesforce SuperRangers! They're a team of superheroes working to protect the world from the bad guys. </p>
+						<p class="slds-m-vertical_medium">They'd rather be out fighting crime than working in the office filling out orders for new grappling hooks, lasers and utility
+						belts.</p>
+						<p class="slds-m-vertical_medium">In this trial you'll join the SuperRangers team and see how they've customized Salesforce to their unique needs. Your mission,
+						should you choose to accept it, is to make saving the world easier.</p>
+					</lightning:layoutItem>
+
+					<lightning:layoutItem size="12" flexibility="no-flex" class="slds-align-bottom">
+						<lightning:button variant="brand" label="Let's go!" class="slds-button_huge" onclick="{!c.storySet}" />
+					</lightning:layoutItem>
+				</lightning:layout>
+			</lightning:layoutItem>
+
+		</lightning:layout>
+
+		<c:UniversalAnalyticsPageTag pageName="/welcome/welcome" pageTitle="welcome"/>
+	</aura:if>
+
+	<aura:if isTrue="{!v.recordId}">
+		<c:UniversalAnalytics aura:id="wua" location="welcome"/>
+	</aura:if>
+
+
+</aura:component>

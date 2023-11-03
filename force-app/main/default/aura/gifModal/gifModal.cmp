@@ -1,0 +1,6 @@
+<aura:component>
+	<aura:attribute name="gifurl" type="string" access="public" required="true"/>
+
+	<img src="{!v.gifurl}" class="gif"/>
+
+</aura:component>

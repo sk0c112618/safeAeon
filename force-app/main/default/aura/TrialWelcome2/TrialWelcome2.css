@@ -1,0 +1,24 @@
+.THIS .background{
+	background-image:url('https://raw.githubusercontent.com/mshanemc/platformTrial/master/assets/introBackground.png');
+	min-height: 75vh;
+	margin: -0.75rem;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center bottom;
+}
+
+.THIS .fullHeight {
+	height: 100%;
+}
+
+.THIS button.slds-button_huge {
+  width: 100%;
+  height: 50px;
+  font-size: 1.2rem;
+}
+
+.THIS .slds-form-element__control.pickers{
+	flex-direction: row;
+	width:100%;
+  	justify-content: space-evenly;
+}

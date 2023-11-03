@@ -1,0 +1,7 @@
+<aura:component controller="UniversalAnalytics">
+	<aura:attribute name="pageName" type="string" required="true" access="global"/>
+	<aura:attribute name="pageTitle" type="string" required="true" access="global"/>
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+</aura:component>
