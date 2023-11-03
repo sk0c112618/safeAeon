@@ -6,7 +6,7 @@ public with sharing class AssignmentManager {
         Trial_Activity__c trial = trials[0];
 
         List<Path_Activity__c> data = [select id, Assigned__c, Path_Name__c from Path_Activity__c];
-
+        //Comment
         for (Path_Activity__c p:data){
 
             if (p.Path_Name__c == 'See Apps' && trial.Path_See_Apps__c){
